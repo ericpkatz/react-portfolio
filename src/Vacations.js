@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 
-const Vacations = ({ vacations, destroy, create })=> {
+
+const VacationForm = ({ create })=> {
   const [startDate, setStartDate ] = useState(moment().format('MM/DD/YYYY'));
   const [endDate, setEndDate ] = useState(moment().add(1, 'week').format('MM/DD/YYYY'));
 
@@ -9,15 +10,20 @@ const Vacations = ({ vacations, destroy, create })=> {
     ev.preventDefault();
     create({ startDate, endDate });
   };
+  return (
+    <form onSubmit={ onSubmit }>
+      <input value={ startDate } onChange={ ev => setStartDate(ev.target.value)} />
+      <input value={ endDate } onChange={ ev => setEndDate(ev.target.value)} />
+      <button>Save</button>
+    </form>
+  );
+};
+const Vacations = ({ vacations, destroy, create })=> {
 
   return (
     <main className='vacations'>
       <h2>Vacations</h2>
-      <form onSubmit={ onSubmit }>
-        <input value={ startDate } onChange={ ev => setStartDate(ev.target.value)} />
-        <input value={ endDate } onChange={ ev => setEndDate(ev.target.value)} />
-        <button>Save</button>
-      </form>
+      <VacationForm create={ create }/>
       <ul>
         {
           vacations.map( vacation => {
