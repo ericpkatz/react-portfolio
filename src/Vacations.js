@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 
-const Vacations = ({ vacations })=> {
+const Vacations = ({ vacations, destroy, create })=> {
+  const [startDate, setStartDate ] = useState(moment().format('MM/DD/YYYY'));
+  const [endDate, setEndDate ] = useState(moment().add(1, 'week').format('MM/DD/YYYY'));
+
+  const onSubmit = (ev)=> {
+    ev.preventDefault();
+    create({ startDate, endDate });
+  };
+
   return (
     <main className='vacations'>
       <h2>Vacations</h2>
+      <form onSubmit={ onSubmit }>
+        <input value={ startDate } onChange={ ev => setStartDate(ev.target.value)} />
+        <input value={ endDate } onChange={ ev => setEndDate(ev.target.value)} />
+        <button>Save</button>
+      </form>
       <ul>
         {
           vacations.map( vacation => {
@@ -20,6 +33,7 @@ const Vacations = ({ vacations })=> {
                 <div>
                   { moment(vacation.endDate).diff(moment(vacation.startDate), 'days') } Days
                 </div>
+                <button onClick={()=> destroy( vacation )}>x</button>
               </li>
             );
           })

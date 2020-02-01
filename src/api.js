@@ -23,6 +23,14 @@ const fetchVacations = async(userId)=> {
   return (await axios.get(`${API}/users/${userId}/vacations`)).data;
 };
 
+const destroyVacation = async(userId, vacation)=> {
+  return await axios.delete(`${API}/users/${userId}/vacations/${vacation.id}`);
+};
+
+const createVacation = async(userId, vacation)=> {
+  return (await axios.post(`${API}/users/${userId}/vacations`, vacation)).data;
+};
+
 const fetchNotes = async(userId)=> {
   return (await axios.get(`${API}/users/${userId}/notes`)).data;
 };
@@ -31,4 +39,4 @@ const fetchFollowingCompanies = async(userId)=> {
   return (await axios.get(`${API}/users/${userId}/followingCompanies`)).data;
 };
 
-export { fetchUser, fetchVacations, fetchNotes, fetchFollowingCompanies };
+export { createVacation, destroyVacation, fetchUser, fetchVacations, fetchNotes, fetchFollowingCompanies };

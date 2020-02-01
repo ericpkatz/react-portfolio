@@ -3,11 +3,12 @@ import qs from 'qs';
 import Header from './Header';
 import Notes from './Notes';
 import Vacations from './Vacations';
-import { fetchUser, fetchVacations, fetchNotes, fetchFollowingCompanies } from './api';
+import { destroyVacation, createVacation, fetchUser, fetchVacations, fetchNotes, fetchFollowingCompanies } from './api';
 
 
 function App() {
   const [ user, setUser ] = useState({});
+
   const [ notes, setNotes ] = useState([]);
   const [ vacations, setVacations ] = useState([]);
   const [ followingCompanies, setFollowingCompanies] = useState([]);
@@ -53,6 +54,16 @@ function App() {
   };
   const { view } = params;
 
+  const _destroyVacation = async(vacationToDestroy)=> {
+    await destroyVacation(user.id, vacationToDestroy);
+    setVacations(vacations.filter(vacation => vacation.id !== vacationToDestroy.id));
+  };
+
+  const _createVacation = async(vacationToCreate)=> {
+    const created = await createVacation(user.id, vacationToCreate);
+    setVacations([...vacations, created]);
+  };
+
 
   return (
     <div>
@@ -73,7 +84,7 @@ function App() {
       }
       {
         view === 'vacations' && (
-          <Vacations vacations={ vacations } />
+          <Vacations vacations={ vacations } destroy={ _destroyVacation } create={ _createVacation }/>
         )
       }
     </div>

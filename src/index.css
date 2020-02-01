@@ -65,3 +65,18 @@ main.vacations ul li {
   margin-bottom: 1rem;
   padding: 1rem;
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form > * {
+  margin: 1rem;
+}
+
+form > input,button {
+  height: 3rem;
+  font-size: 1.5rem;
+}
+
