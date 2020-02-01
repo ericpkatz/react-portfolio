@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import qs from 'qs';
 import Header from './Header';
 import Notes from './Notes';
+import Vacations from './Vacations';
 import { fetchUser, fetchVacations, fetchNotes, fetchFollowingCompanies } from './api';
 
 
@@ -68,6 +69,11 @@ function App() {
       {
         view === 'notes' && (
           <Notes notes={ notes } />
+        )
+      }
+      {
+        view === 'vacations' && (
+          <Vacations vacations={ vacations } />
         )
       }
     </div>

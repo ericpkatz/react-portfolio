@@ -50,3 +50,18 @@ main.home a {
 main.notes {
   margin: 3rem;
 }
+
+main.vacations {
+  margin: 3rem;
+}
+
+main.vacations ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+main.vacations ul li {
+  border-bottom: solid 1px teal;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
