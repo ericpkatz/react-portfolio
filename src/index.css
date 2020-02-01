@@ -30,14 +30,23 @@ header img {
   border-radius: 50%;
 }
 
-main {
+main.home {
   display: flex;
   justify-content: space-around;
   margin-top: 100px;
 }
 
-main > div {
+main.home > div {
   padding: 2rem;
   background-color: teal;
   color: white;
+}
+
+main.home a {
+  color: white;
+  text-transform: uppercase;
+}
+
+main.notes {
+  margin: 3rem;
 }

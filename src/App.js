@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import qs from 'qs';
 import Header from './Header';
+import Notes from './Notes';
 import { fetchUser, fetchVacations, fetchNotes, fetchFollowingCompanies } from './api';
 
 
@@ -8,6 +10,17 @@ function App() {
   const [ notes, setNotes ] = useState([]);
   const [ vacations, setVacations ] = useState([]);
   const [ followingCompanies, setFollowingCompanies] = useState([]);
+
+  const getHash = ()=> {
+    return window.location.hash.slice(1);
+  }
+  const [ params, setParams ] = useState(qs.parse(getHash()));
+
+  useEffect(()=> {
+    window.addEventListener('hashchange', ()=> {
+      setParams(qs.parse(getHash()));
+    });
+  }, []);
 
   const fetchAndSetUser = ()=> {
     fetchUser()
@@ -37,15 +50,26 @@ function App() {
     window.localStorage.removeItem('userId');
     fetchAndSetUser();
   };
+  const { view } = params;
+
 
   return (
     <div>
       <Header user={ user } changeUser={ changeUser } />
-      <main>
-        <div>{ notes.length } notes.</div>
-        <div>{ vacations.length } vacations.</div>
-        <div>Following { followingCompanies.length } companies</div>
-      </main>
+      {
+        view === undefined && (
+          <main className='home'>
+            <div>{ notes.length } <a href='#view=notes'>notes</a>.</div>
+            <div>{ vacations.length } <a href='#view=vacations'>vacations</a>.</div>
+            <div>Following { followingCompanies.length } <a href='#view=followingCompanies'>companies</a></div>
+          </main>
+        )
+      }
+      {
+        view === 'notes' && (
+          <Notes notes={ notes } />
+        )
+      }
     </div>
   );
 }
