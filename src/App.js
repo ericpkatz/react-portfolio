@@ -3,7 +3,9 @@ import qs from 'qs';
 import Header from './Header';
 import Notes from './Notes';
 import Vacations from './Vacations';
+import Home from './Home';
 import { destroyVacation, createVacation, fetchUser, fetchVacations, fetchNotes, fetchFollowingCompanies } from './api';
+import { HashRouter, Link, Route } from 'react-router-dom';
 
 
 function App() {
@@ -12,17 +14,6 @@ function App() {
   const [ notes, setNotes ] = useState([]);
   const [ vacations, setVacations ] = useState([]);
   const [ followingCompanies, setFollowingCompanies] = useState([]);
-
-  const getHash = ()=> {
-    return window.location.hash.slice(1);
-  }
-  const [ params, setParams ] = useState(qs.parse(getHash()));
-
-  useEffect(()=> {
-    window.addEventListener('hashchange', ()=> {
-      setParams(qs.parse(getHash()));
-    });
-  }, []);
 
   const fetchAndSetUser = ()=> {
     fetchUser()
@@ -52,7 +43,6 @@ function App() {
     window.localStorage.removeItem('userId');
     fetchAndSetUser();
   };
-  const { view } = params;
 
   const _destroyVacation = async(vacationToDestroy)=> {
     await destroyVacation(user.id, vacationToDestroy);
@@ -66,28 +56,14 @@ function App() {
 
 
   return (
-    <div>
-      <Header user={ user } changeUser={ changeUser } />
-      {
-        view === undefined && (
-          <main className='home'>
-            <div>{ notes.length } <a href='#view=notes'>notes</a>.</div>
-            <div>{ vacations.length } <a href='#view=vacations'>vacations</a>.</div>
-            <div>Following { followingCompanies.length } <a href='#view=followingCompanies'>companies</a></div>
-          </main>
-        )
-      }
-      {
-        view === 'notes' && (
-          <Notes notes={ notes } />
-        )
-      }
-      {
-        view === 'vacations' && (
-          <Vacations vacations={ vacations } destroy={ _destroyVacation } create={ _createVacation }/>
-        )
-      }
-    </div>
+    <HashRouter>
+      <div>
+        <Header user={ user } changeUser={ changeUser } />
+        <Route exact path='/' render={ ()=> <Home vacations={ vacations} notes={ notes } followingCompanies={ followingCompanies }/> } />
+        <Route path='/notes' render={()=> <Notes notes={ notes } /> } />
+        <Route path='/vacations' render={ ()=> <Vacations vacations={ vacations } destroy={ _destroyVacation } create={ _createVacation }/> } />
+      </div>
+    </HashRouter>
   );
 }
 
